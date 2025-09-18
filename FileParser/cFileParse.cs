@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Electroimpact.FileParser
+namespace ToddUtils.FileParser
 {
   public class cFileParse : IDisposable
   {
-    public Electroimpact.StringCalc.cStringCalc _StringCalc = new Electroimpact.StringCalc.cStringCalc();
+    public ToddUtils.StringCalc.cStringCalc _StringCalc = new ToddUtils.StringCalc.cStringCalc();
 
     #region Publics
     public cFileParse()
@@ -108,7 +108,7 @@ namespace Electroimpact.FileParser
 
     public bool GetArgument(string szLine, string varname, out double dPos, out string sArg, out int StartArg, out int Length)
     {
-      Electroimpact.csString iString = new Electroimpact.csString();
+      ToddUtils.csString iString = new ToddUtils.csString();
       bool bTestLeft = false;
       bool bTestRight = false;
       int nStartArg = 0;

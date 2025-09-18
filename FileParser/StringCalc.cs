@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 
-namespace Electroimpact
+namespace ToddUtils
 {
 
 	public class csString
