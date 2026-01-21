@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 
-namespace Electroimpact
+namespace ToddUtils
 {
 
 	public class csString
@@ -591,7 +591,7 @@ namespace Electroimpact
 			private csString Operators = new csString("+ * / ^ = > < & |");
 			private csString fns = new csString("sin asin cos acos tan atan abs exp ln log rnd sqrt int ! fact sign");
 			private cVariables _vars = new cVariables();
-			private cMacroVars _MacroVars;
+			//private cMacroVars _MacroVars;
 
 			private enum eWhoIsBigger
 			{
@@ -608,10 +608,10 @@ namespace Electroimpact
 			{
 				//this._MacroVars = new cMacroVars();
 			}
-			public cStringCalc(FANUC.OpenCNC CNC)
-			{
-				this._MacroVars = new cMacroVars(CNC);
-			}
+			//public cStringCalc(FANUC.OpenCNC CNC)
+			//{
+			//	this._MacroVars = new cMacroVars(CNC);
+			//}
 			#endregion
 
 			#region PROPERTIES
@@ -987,15 +987,15 @@ namespace Electroimpact
 			private bool IsANumber(string operand)
 			{
 				csString css = new csString(operand);
-				return css.IsNumeric() || this._vars._ContainsVar(operand) || (this._MacroVars != null && this._MacroVars.IsMacroVar(operand));
+				return css.IsNumeric() || this._vars._ContainsVar(operand) || false /*(this._MacroVars != null && this._MacroVars.IsMacroVar(operand) )*/;
 			}
 			private double ToDouble(string operand)
 			{
 				csString css = new csString(operand);
 				if (this._vars._ContainsVar(operand))
 					return this._vars._GetVariable(operand);
-				else if( this._MacroVars != null && this._MacroVars.IsMacroVar(operand) )
-						return this._MacroVars.ToDouble(operand);
+				//else if( this._MacroVars != null && this._MacroVars.IsMacroVar(operand) )
+				//		return this._MacroVars.ToDouble(operand);
 				else
 					return css.ToDouble();
 			}
@@ -1586,57 +1586,57 @@ namespace Electroimpact
 
 			}
 
-			private class cMacroVars
-			{
-				Electroimpact.FANUC.OpenCNC _CNC;
+			//private class cMacroVars
+			//{
+			//	Electroimpact.FANUC.OpenCNC _CNC;
 
-				public cMacroVars()
-				{
-					FANUC.Err_Code myErr;
-					this._CNC = new FANUC.OpenCNC(0, out myErr);
-				}
+			//	public cMacroVars()
+			//	{
+			//		FANUC.Err_Code myErr;
+			//		this._CNC = new FANUC.OpenCNC(0, out myErr);
+			//	}
 
-				public cMacroVars(FANUC.OpenCNC CNC)
-				{
-					this._CNC = CNC;
-				}
-				public bool IsMacroVar(string operand)
-				{
-					csString Operand = new csString(operand);
-					if (Operand.GetLeft(1) == "#")
-					{
-						int num;
-						Operand.FindInteger(1, out num);
-						if (num > 0 && num < 9999)
-							return true;
-					}
-					return false;
-				}
-				public double ToDouble(string operand)
-				{
-					csString cs = new csString(operand);
-					int macnum;
-					cs.FindInteger(1, out macnum);
-					if (macnum > 0 && macnum < 9999)
-					{
-						return this._CNC.ReadMacroVariable((short)macnum);
-					}
-					return double.NaN;
-				}
-				/// <summary>
-				/// Clears macro variables #100-#199. This will
-				/// be used when a new program is loaded or when
-				/// M2, M30, or M31 is run. Closer to the way
-				/// the A380 control program runs.
-				/// </summary>
-				public void ClearMacroVars()
-				{
-					for (short ii = 100; ii < 200; ii++)
-					{
-						this._CNC.WriteMacroVariable(ii, 0);
-					}
-				}
-			}
+			//	public cMacroVars(FANUC.OpenCNC CNC)
+			//	{
+			//		this._CNC = CNC;
+			//	}
+			//	public bool IsMacroVar(string operand)
+			//	{
+			//		csString Operand = new csString(operand);
+			//		if (Operand.GetLeft(1) == "#")
+			//		{
+			//			int num;
+			//			Operand.FindInteger(1, out num);
+			//			if (num > 0 && num < 9999)
+			//				return true;
+			//		}
+			//		return false;
+			//	}
+			//	public double ToDouble(string operand)
+			//	{
+			//		csString cs = new csString(operand);
+			//		int macnum;
+			//		cs.FindInteger(1, out macnum);
+			//		if (macnum > 0 && macnum < 9999)
+			//		{
+			//			return this._CNC.ReadMacroVariable((short)macnum);
+			//		}
+			//		return double.NaN;
+			//	}
+			//	/// <summary>
+			//	/// Clears macro variables #100-#199. This will
+			//	/// be used when a new program is loaded or when
+			//	/// M2, M30, or M31 is run. Closer to the way
+			//	/// the A380 control program runs.
+			//	/// </summary>
+			//	public void ClearMacroVars()
+			//	{
+			//		for (short ii = 100; ii < 200; ii++)
+			//		{
+			//			this._CNC.WriteMacroVariable(ii, 0);
+			//		}
+			//	}
+			//}
 
 			#endregion
 
