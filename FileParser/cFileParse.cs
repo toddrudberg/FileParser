@@ -127,7 +127,12 @@ namespace ToddUtils.FileParser
         if (nStartArg == varname.Length - 1)
           bTestLeft = true;
         else
-          bTestLeft = this.CheckLeftSide(szLine.Substring(nStartArg - 1, 1));
+        {
+          if (nStartArg == 0)
+            bTestLeft = true;
+          else
+            bTestLeft = this.CheckLeftSide(szLine.Substring(nStartArg - 1, 1));
+        }
 
         int offset = szLine.Substring(nStartArg + varname.Length, 1) == "=" ? 1 : 0; //robot part programs use the "=" as an assignement.  We need to check for that. 
 
